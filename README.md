@@ -1,4 +1,4 @@
-**Build A Monster**
+**Jimmy Luu's Space Theme Gallery Shooter**
 
 Template code for displaying sprites from a spritesheet Atlas (XML) using Phaser 3.
 
