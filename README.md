@@ -1,5 +1,7 @@
 **Jimmy Luu's Space Theme Gallery Shooter**
 
-Template code for displaying sprites from a spritesheet Atlas (XML) using Phaser 3.
+Template code used from buildAMonster
 
-Uses Kenny Assets "[Monster Builder Pack](https://kenney.nl/assets/monster-builder-pack)" set, with gratitude.
+Uses Kenny Assets "[Alien UFO Pack](https://kenney.nl/assets/alien-ufo-pack)" set, with gratitude.
+Uses Kenny Assets "[Space Shooter Redux](https://kenney.nl/assets/space-shooter-redux)" set, with gratitude.
+
