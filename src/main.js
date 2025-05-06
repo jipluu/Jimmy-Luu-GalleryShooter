@@ -28,8 +28,10 @@ let config = {
             debug: false
         }
     },
-    scene: [GalleryShooter]  // ← updated to match new scene class name
+    scene: [TitleScreen, GalleryShooter]  // Ensure both scenes are included here
 };
 
 var my = { sprite: {} };
 const game = new Phaser.Game(config);
+
+
