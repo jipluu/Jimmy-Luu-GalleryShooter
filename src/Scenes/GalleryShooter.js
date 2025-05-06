@@ -10,6 +10,7 @@ class GalleryShooter extends Phaser.Scene {
         this.load.audio('playerLaserSound', 'assets/sfx_laser1.ogg');
         this.load.audio('enemyLaserSound', 'assets/sfx_laser2.ogg');
         this.load.audio('playerHitZap', 'assets/sfx_shieldDown.ogg');
+        this.load.audio('explosionSound', 'assets/explosion.ogg');
     }
 
     create() {
@@ -24,6 +25,8 @@ class GalleryShooter extends Phaser.Scene {
         this.playerLaserSound = this.sound.add('playerLaserSound');
         this.enemyLaserSound = this.sound.add('enemyLaserSound');
         this.playerHitZap = this.sound.add('playerHitZap');
+        this.explosionSound = this.sound.add('explosionSound');
+
 
         // Input
         this.keys = this.input.keyboard.addKeys({
@@ -80,8 +83,12 @@ class GalleryShooter extends Phaser.Scene {
             enemy.body.allowGravity = false;
             enemy.body.setCollideWorldBounds(true);
             enemy.body.onWorldBounds = true;
-            enemy.body.checkCollision.up = false;
-            enemy.body.checkCollision.down = false;
+            enemy.body.world.on('worldbounds', (body) => {
+                if (body.gameObject === enemy && body.blocked.down) {
+                    enemy.body.setCollideWorldBounds(false);
+                    enemy.setBounce(0, 0);
+                }
+            });
         }
     }
 
@@ -90,6 +97,7 @@ class GalleryShooter extends Phaser.Scene {
         enemy.destroy();
         this.score++;
         this.scoreText.setText('Score: ' + this.score);
+        this.explosionSound.play();
     }
 
     hitPlayer(player, laser) {
@@ -105,6 +113,7 @@ class GalleryShooter extends Phaser.Scene {
             this.lives--;
             this.livesText.setText('Lives: ' + this.lives);
             enemy.destroy();
+            this.explosionSound.play();
             if (this.lives <= 0) this.endGame();
         }
     }
@@ -124,7 +133,7 @@ class GalleryShooter extends Phaser.Scene {
         ).setOrigin(0.5);
     }
 
-    update(time) {
+    update(time, delta) {
         if (this.gameOver) {
             if (Phaser.Input.Keyboard.JustDown(this.keys.restart)) {
                 this.scene.start('TitleScreen');
@@ -132,7 +141,6 @@ class GalleryShooter extends Phaser.Scene {
             return;
         }
 
-        // Movement
         if (this.keys.left.isDown) {
             this.player.setVelocityX(-300);
         } else if (this.keys.right.isDown) {
@@ -141,25 +149,26 @@ class GalleryShooter extends Phaser.Scene {
             this.player.setVelocityX(0);
         }
 
-        // Shoot
         if (Phaser.Input.Keyboard.JustDown(this.keys.shoot)) {
             const spear = this.spears.create(this.player.x, this.player.y - 50, 'kenny2', 'laserBlue01.png');
             spear.setVelocityY(-400);
             this.playerLaserSound.play();
         }
 
-        // Cleanup out-of-bounds lasers
-        this.spears.children.each((spear) => {
-            if (spear.y < 0) spear.destroy();
+        this.spears.children.iterate((spear) => {
+            if (spear && spear.y < 0) spear.destroy();
         });
 
-        this.enemyLasers.children.each((laser) => {
-            if (laser.y > this.game.config.height) laser.destroy();
-        });
-
-        // Enemy behavior
-        this.enemies.children.each((enemy) => {
+        this.enemies.children.iterate((enemy) => {
             if (!enemy) return;
+
+            if (enemy.getData('type') === 1) {
+                enemy.setVelocityY(100);
+                if (enemy.body.blocked.down || enemy.y >= this.game.config.height - enemy.height / 2) {
+                    enemy.setCollideWorldBounds(false);
+                    enemy.setBounce(0, 0);
+                }
+            }
 
             if (enemy.y > this.game.config.height || enemy.x < -50 || enemy.x > this.game.config.width + 50) {
                 enemy.destroy();
