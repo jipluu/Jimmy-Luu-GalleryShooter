@@ -14,7 +14,7 @@ class CreditsScene extends Phaser.Scene {
       this.starfield = this.add.tileSprite(0, 0, 800, 600, 'bg').setOrigin(0, 0);
   
       // Title
-      this.add.text(400, 80, 'Credits', { fontSize: '40px', fill: '#fff' }).setOrigin(0.5);
+      this.add.text(400, 70, 'Credits', { fontSize: '40px', fill: '#fff' }).setOrigin(0.5);
   
       // Credits text
       const creditText = `

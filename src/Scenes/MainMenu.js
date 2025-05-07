@@ -47,6 +47,16 @@ class MainMenu extends Phaser.Scene {
             this.scene.start('GalleryShooter'); // Start main game scene
         });
 
+        this.add.text(400, 580, 'Press C to view Credits', {
+            fontSize: '20px',
+            fill: '#ffffff',
+        }).setOrigin(0.5);
+        
+        // Set up key input for C
+        this.input.keyboard.on('keydown-C', () => {
+            this.scene.start('CreditsScene');
+        });
+
         // Endless Mode Button
         const endlessText = this.add.text(400, 550, 'ENDLESS MODE', {
             fontSize: '32px',
