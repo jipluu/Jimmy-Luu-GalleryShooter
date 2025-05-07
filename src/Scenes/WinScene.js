@@ -29,7 +29,7 @@ class WinScene extends Phaser.Scene {
       endlessModeButton.setInteractive();
   
       mainMenuButton.on('pointerdown', () => {
-        this.scene.start('TitleScreen');
+        this.scene.start('MainMenu');
       });
   
       endlessModeButton.on('pointerdown', () => {

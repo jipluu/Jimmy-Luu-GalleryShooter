@@ -12,8 +12,10 @@ class MainMenu extends Phaser.Scene {
 
     create() {
 
-        this.bgm = this.sound.add('bgm', { volume: 0.2, loop: true });
-        this.bgm.play();
+        if (!this.sound.get('bgm')) {
+            this.bgm = this.sound.add('bgm', { volume: 0.2, loop: true });
+            this.bgm.play();
+        }
         // Starfield
         this.starfield = this.add.tileSprite(0, 0, 800, 600, 'bg').setOrigin(0);
 
