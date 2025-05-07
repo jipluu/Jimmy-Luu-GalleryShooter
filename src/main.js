@@ -6,32 +6,36 @@
 //
 // A template for building a monster using a series of assets from
 // a sprite atlas.
-// 
-// Art assets from Kenny Assets "Monster Builder Pack" set:
-// https://kenney.nl/assets/monster-builder-pack
 
 "use strict";
 
 let config = {
     parent: 'phaser-game',
-    type: Phaser.CANVAS,
+    type: Phaser.AUTO,
+    width: 800,
+    height: 600,
     render: { pixelArt: true },
-    width: 1000,
-    height: 800,
-    fps: {
-        forceSetTimeOut: true,
-        target: 30
-    },
     physics: {
         default: 'arcade',
-        arcade: {
-            debug: false
-        }
+        arcade: { debug: false }
     },
-    scene: [TitleScreen, GalleryShooter]  // Ensure both scenes are included here
+    fps: { target: 60 },
+    scene: [
+        CreditsScene,
+        TitleScreen,
+        GalleryShooter,
+        BossScene,
+        WinScene,
+        GameOverScene,
+        MainMenu,
+        EndlessScene
+    ]
 };
 
-var my = { sprite: {} };
+let my = { sprite: {}, text: {} };
+let highScore = localStorage.getItem("highScore") || 0;
+
 const game = new Phaser.Game(config);
+
 
 

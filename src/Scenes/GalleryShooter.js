@@ -4,7 +4,7 @@ class GalleryShooter extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('background', 'assets/blue.png');
+        this.load.image('bg', 'assets/starfield.gif');
         this.load.atlasXML('kenny', 'assets/spritesheet_spaceships.png', 'assets/spritesheet_spaceships.xml', { premultiplyAlpha: true });
         this.load.atlasXML('kenny2', 'assets/sheet.png', 'assets/sheet.xml');
         this.load.audio('playerLaserSound', 'assets/sfx_laser1.ogg');
@@ -14,9 +14,9 @@ class GalleryShooter extends Phaser.Scene {
     }
 
     create() {
-        // Add background
-        this.add.image(0, 0, 'background').setOrigin(0, 0).setDisplaySize(this.sys.game.config.width, this.sys.game.config.height);
 
+        // Add background
+        this.starfield = this.add.tileSprite(0, 0, 800, 600, 'bg').setOrigin(0, 0);
         // Textures
         this.textures.get('kenny').setFilter(Phaser.Textures.FilterMode.LINEAR);
         this.textures.get('kenny2').setFilter(Phaser.Textures.FilterMode.LINEAR);
@@ -39,6 +39,7 @@ class GalleryShooter extends Phaser.Scene {
         // Initialize player, groups, and variables
         this.player = this.physics.add.sprite(this.game.config.width / 2, this.game.config.height - 50, 'kenny2', 'playerShip1_red.png');
         this.player.setCollideWorldBounds(true);
+        this.player.setScale(0.7);
         this.spears = this.physics.add.group();
         this.enemies = this.physics.add.group();
         this.enemyLasers = this.physics.add.group();
@@ -48,8 +49,9 @@ class GalleryShooter extends Phaser.Scene {
         this.gameOver = false;
 
         // UI
-        this.scoreText = this.add.text(20, 20, 'Score: 0', { fontSize: '24px', fill: '#fff' });
-        this.livesText = this.add.text(20, 50, 'Lives: 3', { fontSize: '24px', fill: '#fff' });
+        this.scoreText = this.add.text(20, 20, 'Score: 0', { fontSize: '18px', fill: '#fff' });
+        this.livesText = this.add.text(20, 50, 'Lives: 3', { fontSize: '18px', fill: '#fff' });
+        this.objectiveText = this.add.text(20, 80, 'Destroy 10 ships', { fontSize: '18px', fill: '#fff' });
 
         // Enemy spawner
         this.enemySpawnEvent = this.time.addEvent({
@@ -98,7 +100,12 @@ class GalleryShooter extends Phaser.Scene {
         this.score++;
         this.scoreText.setText('Score: ' + this.score);
         this.explosionSound.play();
+    
+        if (this.score === 10) {
+            this.scene.start('BossScene');
+        }
     }
+
 
     hitPlayer(player, laser) {
         laser.destroy();
@@ -128,7 +135,9 @@ class GalleryShooter extends Phaser.Scene {
         this.gameOverText = this.add.text(
             this.game.config.width / 2,
             this.game.config.height / 2,
-            `Game Over\nHigh Score: ${localStorage.getItem('highScore')}\nPress R to Restart`,
+            `Game Over\nHigh Score: ${localStorage.getItem('highScore')}
+            
+            \nPress R to Restart\nPress M to Main Menu`,
             { fontSize: '32px', fill: '#fff', align: 'center' }
         ).setOrigin(0.5);
     }
@@ -140,6 +149,9 @@ class GalleryShooter extends Phaser.Scene {
             }
             return;
         }
+
+        this.starfield.tilePositionY -= 1;
+
 
         if (this.keys.left.isDown) {
             this.player.setVelocityX(-300);
