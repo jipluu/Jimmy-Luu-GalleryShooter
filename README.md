@@ -1,5 +1,7 @@
 **Jimmy Luu's Space Theme Gallery Shooter**
 
+Project for CMPM 120
+
 Template code used from buildAMonster
 
 Uses Kenny Assets "[Alien UFO Pack](https://kenney.nl/assets/alien-ufo-pack)" set, with gratitude.
