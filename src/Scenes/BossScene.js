@@ -157,7 +157,7 @@ class BossScene extends Phaser.Scene {
     bullet.body.setVelocity(vx, vy);
     bullet.setScale(1);
     bullet.setDepth(1);
-    bullet.body.setSize(12, 12); // Optional: tweak collision box size
+    bullet.body.setSize(12, 12);
     console.log("Bullet created at:", x, y);
   }
 
@@ -185,7 +185,6 @@ class BossScene extends Phaser.Scene {
     // Play explosion sound effect
     this.sound.play('explosionSound');
   
-    // Add a delay (optional) before switching to WinScene
     this.time.delayedCall(1000, () => {
       console.log('Boss defeated! Switching to WinScene.');
       this.scene.start('WinScene');
