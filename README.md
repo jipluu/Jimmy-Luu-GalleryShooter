@@ -16,3 +16,5 @@ Starfield Gif made by GalaBar "[Ozp](https://gifer.com/en/Ozp)"
 
 All assets, BGM, sounds, and GIF were used with gratitude!
 
+Thanks for playing!
+
